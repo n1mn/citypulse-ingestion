@@ -14,30 +14,30 @@ CityPulse periodically ingests weather data from the OpenWeather API, stores his
 ## 🏗️ Architecture
 
 ```text
-                        OpenWeather API
-                               │
-                               ▼
-                         Weather Client
-                               │
-                               ▼
-                       ETL Transformation
-                               │
-                               ▼
-                            PostgreSQL
-                        ┌──────────────┐
-                        │              │
-                Cities Table   Weather Table
-                        ▲              ▲
-                        │              │
-            World Cities CSV     APScheduler
-                        │              │
-                        └──────┬───────┘
-                               │
-                               ▼
-                            FastAPI
-                               │
-                               ▼
-                            REST API
+        OpenWeather API
+                │
+                ▼
+            Weather Client
+                │
+                ▼
+        ETL Transformation
+                │
+                ▼
+            PostgreSQL
+        ┌──────────────┐
+        │              │
+Cities Table   Weather Table
+        ▲              ▲
+        │              │
+World Cities CSV     APScheduler
+        │              │
+        └──────┬───────┘
+                │
+                ▼
+            FastAPI
+                │
+                ▼
+            REST API
 ```
 
 ## ✨ Features
@@ -118,7 +118,7 @@ PostgreSQL
 ## 🚀 Running the Project
 
 ```bash
-git clone <repository>
+git clone https://github.com/n1mn/citypulse-ingestion.git
 
 cd citypulse-ingestion
 

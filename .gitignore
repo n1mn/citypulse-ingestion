@@ -7,7 +7,6 @@ __pycache__/
 .venv/
 venv/
 
-data/
 
 # Environment Variables
 .env
@@ -25,7 +24,7 @@ data/
 # Database
 *.db
 
-# Pytest
+# Pytest -
 .pytest_cache/
 
 # Mypy
