@@ -24,7 +24,7 @@ venv/
 # Database
 *.db
 
-# Pytest -
+# Pytest
 .pytest_cache/
 
 # Mypy
