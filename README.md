@@ -13,66 +13,31 @@ CityPulse periodically ingests weather data from the OpenWeather API, stores his
 
 ## 🏗️ Architecture
 
-```mermaid
-flowchart TB
-    subgraph external["🌐 External Sources"]
-        OWM["OpenWeather API"]
-        CSV["World Cities CSV<br/>(40k+ cities)"]
-    end
-
-    subgraph ingestion["⚙️ Ingestion Tier"]
-        SCHED["APScheduler<br/><i>weather_scheduler</i>"]
-        subgraph etl["ETL Pipelines"]
-            WC["Weather Client<br/>(HTTPX)"]
-            TR["Transformers"]
-            WP["Weather Pipeline"]
-            CIP["City Import Pipeline"]
-        end
-    end
-
-    subgraph service["🧩 Service Tier"]
-        WIS["Weather Ingestion Service"]
-        WS["Weather Service"]
-        CS["City Service"]
-    end
-
-    subgraph data["🗄️ Data Tier"]
-        ORM["SQLAlchemy ORM<br/><i>City · WeatherObservation</i>"]
-        ALEMBIC["Alembic Migrations"]
-        subgraph pg["PostgreSQL (Docker)"]
-            CT[("cities")]
-            WT[("weather_observations")]
-        end
-    end
-
-    subgraph api["🚪 API Tier — FastAPI"]
-        HEALTH["GET /health"]
-        CITIES["GET /cities"]
-        LATEST["GET /weather/latest"]
-    end
-
-    CLIENT["👤 REST Clients"]
-
-    SCHED -->|"triggers on interval"| WP
-    WP --> WC
-    OWM -->|"JSON weather data"| WC
-    WC --> TR
-    TR --> WIS
-    CSV --> CIP
-    CIP --> CS
-
-    WIS --> ORM
-    WS --> ORM
-    CS --> ORM
-    ORM --> CT
-    ORM --> WT
-    ALEMBIC -.->|"schema versioning"| pg
-
-    CLIENT --> HEALTH
-    CLIENT --> CITIES
-    CLIENT --> LATEST
-    CITIES --> CS
-    LATEST --> WS
+```text
+        OpenWeather API
+                │
+                ▼
+            Weather Client
+                │
+                ▼
+        ETL Transformation
+                │
+                ▼
+            PostgreSQL
+        ┌──────────────┐
+        │              │
+Cities Table   Weather Table
+        ▲              ▲
+        │              │
+World Cities CSV     APScheduler
+        │              │
+        └──────┬───────┘
+                │
+                ▼
+            FastAPI
+                │
+                ▼
+            REST API
 ```
 
 ## ✨ Features
